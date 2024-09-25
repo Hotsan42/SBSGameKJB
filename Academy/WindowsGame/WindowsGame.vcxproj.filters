@@ -36,12 +36,18 @@
     <None Include="Comment3.md">
       <Filter>Comment</Filter>
     </None>
+    <None Include="Comment4.md">
+      <Filter>Comment</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
       <Filter>99.Utils</Filter>
     </ClInclude>
     <ClInclude Include="commonFunction.h">
+      <Filter>99.Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Defines.h">
       <Filter>99.Utils</Filter>
     </ClInclude>
   </ItemGroup>

@@ -13,16 +13,39 @@
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
+#include <windowsx.h>
 
 #include <iostream>
 #include <format>
 #pragma comment (linker, "/entry:wWinMainCRTStartup /subsystem:console")
-using namespace std;
+
 //==================================
-// ##c++ 관련 헤더
+// ## c++ 관련 헤더 ##
 //==================================
 #include <algorithm>
 #include <string>
+using namespace std;
+
+//==================================
+// ## STD 관련 헤더 ##
+//==================================
+
+
+//==================================
+// ## 자료구조 관련 헤더 ##
+//==================================
+#include <vector>
+#include <map>
+#include <set>
+#include <queue>
+#include <unordered_map>
+#include <unordered_set>
+
+
+//==================================
+// ## Define 설정 ##
+//==================================
+#include "Defines.h"
 
 //==================================
 // ## Custom 헤더

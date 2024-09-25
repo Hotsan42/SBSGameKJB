@@ -99,7 +99,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 ```
 1. 윈도우 클래스를 등록
 - MS에서 지정한 함수이기 때문에 MS 문서를 봐야함
-[RegisterClassExW]()
+//RegisterClassExW
 -wcex.lpfnWndProc = WndProc; <- -DispatchMessage를 실행 시키게되면 실행하는 함수(윈도우 프로시저)
 
 ### 윈도우 생성
