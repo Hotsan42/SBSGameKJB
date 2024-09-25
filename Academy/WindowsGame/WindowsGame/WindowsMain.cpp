@@ -227,6 +227,24 @@ LRESULT WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case 300:
 			//두더지 들어가는 로직
 			break;
+		case 400:
+			//두더지 들어가는 로직
+			break;
+		case 500:
+			//두더지 들어가는 로직
+			break;
+		case 600:
+			//두더지 들어가는 로직
+			break;
+		case 700:
+			//두더지 들어가는 로직
+			break;
+		case 800:
+			//두더지 들어가는 로직
+			break;
+		case 900:
+			//두더지 들어가는 로직
+			break;
 
 		default:
 			break;
