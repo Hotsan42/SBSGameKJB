@@ -1,36 +1,36 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
-//Àü¿ªº¯¼ö:
-HINSTANCE _hInstance;
-HWND	  _hWnd;
 
-ATOM	  MyRegisterClass(HINSTANCE hInstance);
-BOOL	  InitInstance(HINSTANCE instance, int nCmdShow);
-LRESULT	  WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lparam);
-void SetWindowSize(int x, int y, int width, int height);
+//ì „ì—­ë³€ìˆ˜:
+HINSTANCE	_hInstance;
+HWND		_hWnd;
+
+ATOM		MyRegisterClass(HINSTANCE hInstance);
+BOOL		InitInstance(HINSTANCE instance, int nCmdShow);
+LRESULT		WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lparam);
+void		SetWindowSize(int x, int y, int width, int height);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
-	_In_opt_ HINSTANCE hPrevINstance,
+	_In_opt_ HINSTANCE hPrevInstance,
 	_In_ LPWSTR lpCmdLine,
 	_In_ int nCmdShow)
 {
-	// 1. À©µµ¿ìÅ¬·¡½º¸¦ µî·Ï
+	// 1. ìœˆë„ìš°í´ëž˜ìŠ¤ë¥¼ ë“±ë¡
 	MyRegisterClass(hInstance);
 
-	// 2. À©µµ¿ì¸¦ »ý¼º
+	// 2. ìœˆë„ìš°ë¥¼ ìƒì„±
 	if (false == InitInstance(hInstance, nCmdShow))
 	{
 		return FALSE;
 	}
 
-	// 3. À©µµ¿ì ¸Þ¼¼Áö ·çÇÁ
+	// 3. ìœˆë„ìš° ë©”ì„¸ì§€ ë£¨í”„
 	MSG msg;
 	while (GetMessage(&msg, nullptr, 0, 0))
 	{
 		::TranslateMessage(&msg);
 		::DispatchMessage(&msg);
 	}
-
 }
 
 ATOM MyRegisterClass(HINSTANCE hInstance)
@@ -53,11 +53,12 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
 	return ::RegisterClassExW(&wcex);
 }
+
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
 	_hInstance = hInstance;
 
-	HWND hWnd = CreateWindow(_T("GameClient"), _T("GameClient"), WS_OVERLAPPEDWINDOW,
+	HWND hWnd = CreateWindowW(_T("GameClient"), _T("GameClient"), WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
 	_hWnd = hWnd;
@@ -67,12 +68,13 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		return FALSE;
 	}
 
-	SetWindowSize(0, 0, WIN_SIZE_X, WIN_SIZE_Y);
+	SetWindowSize(WIN_START_X, WIN_START_Y, WIN_SIZE_X, WIN_SIZE_Y);
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
 	return TRUE;
 }
+
 
 void SetWindowSize(int x, int y, int width, int height)
 {
@@ -83,12 +85,9 @@ void SetWindowSize(int x, int y, int width, int height)
 	rc.bottom = height;
 
 	::AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, false);
-
 	::SetWindowPos(_hWnd, nullptr, x, y, rc.right - rc.left, rc.bottom - rc.top, SWP_NOZORDER);
 }
 
-int currentDan = 0;
-int mouseX, mouseY;
 POINT mousePos = {};
 
 class Enemy
@@ -118,22 +117,22 @@ LRESULT WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message)
 	{
 	case WM_CREATE:
-		//À©µµ¿ì »ý¼º½Ã ¹ß»ýÀÌº¥Æ®
-		//¿©±â¼­ ÃÊ±âÈ­ µ¿ÀÛ
+		// ìœˆë„ìš°ê°€ ìƒì„±ë˜ì—ˆì„ë•Œ ë°œìƒí•˜ëŠ” ì´ë²¤íŠ¸
+		// ì—¬ê¸°ì—ì„œ ì´ˆê¸°í™” ë™ìž‘
 		srand(time(NULL));
 
-		//60ÇÁ·¹ÀÓ -> Å¸ÀÌ¸ÓÈ£ÃâÁÖ±â
+		//60í”„ë ˆìž„ -> íƒ€ì´ë¨¸í˜¸ì¶œì£¼ê¸°
 		SetTimer(hWnd, 1, 1000 / 60, NULL);
 
-		//µÎ´õÁö Æ¢¾î³ª¿À±â
+		//ë‘ë”ì§€ íŠ€ì–´ë‚˜ì˜¤ê¸°
 		SetTimer(hWnd, 2, 1000, NULL);
-		
+
 		for (int i = 0; i < 9; i++)
 		{
 			Enemy newEnemy;
 			newEnemy.isLive = false;
 			newEnemy.rc = {
-				(i % 3) * 100,
+				(i % 3) * 100 ,
 				(i / 3) * 100,
 				(i % 3) * 100 + 70,
 				(i / 3) * 100 + 70
@@ -142,70 +141,27 @@ LRESULT WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 
 		break;
-
-	
-	case WM_PAINT:
-	{
-		//È­¸éÀ» ±×¸®´Â ÀÌº¥Æ®
-		//½ÃÀÛÇßÀ» ¶§ È£Ãâ ÇÑ¹ø µÇ°í, InvalidateRect¶ó´Â ÇÔ¼ö°¡ È£Ãâ µÆÀ» ¶§ ÇÑ¹ø ½ÇÇàµÇ°í
-		PAINTSTRUCT ps;
-		HDC hdc = BeginPaint(hWnd, &ps);
-
-		for (Enemy enemy : enemies)
-		{
-			if (enemy.IsLive())
-			{
-				enemy.Draw(hdc);
-			}
-		}
 		
-		::EndPaint(hWnd, &ps);
-	}
+	case WM_LBUTTONDOWN:
+
 		break;
-
-	case WM_TIMER:
-		switch (wParam)
+	case WM_PAINT:
 		{
-		case 1:
-			InvalidateRect(_hWnd, NULL, true);
-			break;
+			// í™”ë©´ì„ ê·¸ë¦¬ëŠ” ì´ë²¤íŠ¸
+			// ì‹œìž‘í–ˆì„ë–„ í˜¸ì¶œí•œë²ˆë˜ê³ , InvalidateRectë¼ëŠ” í•¨ìˆ˜ê°€ í˜¸ì¶œëì„ë•Œ í•œë²ˆ ì‹¤í–‰ë˜ê³ 
 
-		case 2:
-			//µÎ´õÁö Æ¢¾î³ª¿À´Â ·ÎÁ÷
-			SetTimer(hWnd, doonum * 100, 5000, NULL);
-			//100, 200, 300, 400, 500, 600, 700, 800, 900À¸·Î ¸¸µé¾îÁö°ÚÁÒ
-			break;
+			PAINTSTRUCT ps;
+			HDC hdc = ::BeginPaint(hWnd, &ps);
 
-		case 100:
-			//µÎ´õÁö µé¾î°¡´Â ·ÎÁ÷
-			break;
-		case 200:
-			//µÎ´õÁö µé¾î°¡´Â ·ÎÁ÷
-			break;
-		case 300:
-			//µÎ´õÁö µé¾î°¡´Â ·ÎÁ÷
-			break;
-		case 400:
-			//µÎ´õÁö µé¾î°¡´Â ·ÎÁ÷
-			break;
-		case 500:
-			//µÎ´õÁö µé¾î°¡´Â ·ÎÁ÷
-			break;
-		case 600:
-			//µÎ´õÁö µé¾î°¡´Â ·ÎÁ÷
-			break;
-		case 700:
-			//µÎ´õÁö µé¾î°¡´Â ·ÎÁ÷
-			break;
-		case 800:
-			//µÎ´õÁö µé¾î°¡´Â ·ÎÁ÷
-			break;
-		case 900:
-			//µÎ´õÁö µé¾î°¡´Â ·ÎÁ÷
-			break;
+			for (Enemy enemy : enemies)
+			{
+				if (enemy.IsLive())
+				{
+					enemy.Draw(hdc);
+				}
+			}
 
-		default:
-			break;
+			::EndPaint(hWnd, &ps);
 		}
 		break;
 
@@ -218,29 +174,74 @@ LRESULT WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				if (enemy.rc.left <= mousePos.x && mousePos.x <= enemy.rc.right)
 				{
-					if (enemy.rc.bottom <= mousePos.y && mousePos.y <= enemy.rc.bottom)
+					if (enemy.rc.top <= mousePos.y && mousePos.y <= enemy.rc.bottom)
 					{
 						enemy.Die();
 					}
 				}
 			}
+			break;
+
+		case 'S':
+			for (Enemy& enemy : enemies)
+			{
+				printf("-----------------------\n");
+				printf("rc : %d, %d, %d, %d\n", enemy.rc.left, enemy.rc.top, enemy.rc.right, enemy.rc.bottom);
+				printf("isLive : %d\n", enemy.isLive);
+				printf("-----------------------\n");
+			}
+			break;
+		default:
+			break;
 		}
 	}
+		break;
 
 	case WM_MOUSEMOVE:
 	{
-		//À§Ä¡ ¾îÄÉ¾Í?
 		mousePos.x = GET_X_LPARAM(lParam);
 		mousePos.y = GET_Y_LPARAM(lParam);
 	}
 		break;
 
-	case WM_DESTROY:
-		break;
-	default:
-		break;
-	}
+	case WM_TIMER:
+		switch (wParam)
+		{
+		case 1:
+			InvalidateRect(hWnd, NULL, true);
+			break;
 
+		case 2:
+			// ë‘ë”ì§€ íŠ€ì–´ë‚˜ì˜¤ëŠ” ë¡œì§
+			// SetTimer(hWnd, ë‘ë”ì§€ë²ˆí˜¸ * 100, 5000, NULL);
+			// 100 , 200 , 300, 400, 500, 600, 700, 800, 900 ìœ¼ë¡œ ë§Œë“¤ì–´ì§€ê² ì£ 
+			//  + ë‘ë”ì§€ ìž¡ì•˜ì„ë•Œ KillTimerë¥¼ ê¼­í•´ì£¼ì…”ì•¼í•©ë‹ˆë‹¤. (ë‘ë”ì§€ë²ˆí˜¸ * 100)
+			break;
+
+		case 100:
+			//ë‘ë”ì§€ ë“¤ì–´ê°€ëŠ” ë¡œì§
+			break;
+		case 200:
+			//ë‘ë”ì§€ ë“¤ì–´ê°€ëŠ” ë¡œì§
+			break;
+		case 300:
+			//ë‘ë”ì§€ ë“¤ì–´ê°€ëŠ” ë¡œì§
+			break;
+
+		default:
+			break;
+		}
+		break;
+
+	case WM_DESTROY:
+		// ìœˆë„ìš° ì¢…ë£Œ ë©”ì„¸ì§€ê°€ ì™”ì„ë•Œ ë°œìƒë˜ëŠ” ì´ë²¤íŠ¸
+		::KillTimer(hWnd, 1);
+		::PostQuitMessage(0);
+		break;
+
+	default:
+		return DefWindowProc(hWnd, message, wParam, lParam);
+	}
 
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
