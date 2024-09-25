@@ -15,11 +15,17 @@
 #include <tchar.h>
 
 #include <iostream>
-
+#include <format>
+#pragma comment (linker, "/entry:wWinMainCRTStartup /subsystem:console")
+using namespace std;
 //==================================
 // ##c++ 관련 헤더
 //==================================
 #include <algorithm>
 #include <string>
 
-using namespace std;
+//==================================
+// ## Custom 헤더
+//==================================
+#include "CommonFunction.h"
+
