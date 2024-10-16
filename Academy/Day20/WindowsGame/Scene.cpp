@@ -20,3 +20,17 @@ void Scene::Release()
 {
 
 }
+void Scene::SpawnGameObject(GameObject* gameObject)
+{
+	if (gameObject == nullptr) return;
+
+	_gameObjects.push_back(gameObject);
+}
+void Scene::DespawnGameObject(GameObject* gameObject)
+{
+	if (gameObject == nullptr) return;
+
+	auto findIt = find(_gameObjects.begin(), _gameObjects.end(), gameObject);
+
+	if (findIt !=)
+}

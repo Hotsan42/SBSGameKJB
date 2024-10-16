@@ -5,6 +5,8 @@
 #include "Day17Scene.h"
 #include "Day18Scene.h"
 #include "Day19Scene.h"
+#include "Day21Scene.h"
+
 void SceneManager::Init()
 {
 

@@ -12,6 +12,10 @@ public:
 	virtual void Release();
 
 public:
+	void SpawnGameObject(GameObject* gameObject);
+	void DespawnGameObject(GameObject* gameObject);
+
+public:
 	Scene() {}
 	virtual ~Scene() {}
 
